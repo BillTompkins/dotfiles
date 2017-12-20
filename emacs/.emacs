@@ -13,7 +13,7 @@
  (lambda (package)
    (or (package-installed-p package)
        (package-install package)))
- '(git-gutter vimrc-mode powerline helm-ag color-theme-solarized dracula-theme delight realgud diminish helm-descbinds helm-git helm-ls-git helm-projectile highlight-indent-guides magit helm-cscope helm-gtags helm zenburn-theme nlinum diffview other-frame-window python))
+ '(git-gutter vimrc-mode powerline helm-ag color-theme-solarized dracula-theme delight realgud diminish helm-descbinds helm-git helm-ls-git helm-projectile highlight-indent-guides magit helm-cscope helm-gtags helm zenburn-theme nlinum diffview other-frame-window python ido-completing-read+))
 
 ;; ============================================================================
 ;; Theme
@@ -27,61 +27,75 @@
 ;(load-theme 'dracula t)
 
 ;; ============================================================================
+;; IDO
+;; ============================================================================
+
+(ido-mode 1)
+(setq ido-everywhere t)
+(require 'ido-completing-read+)
+(ido-ubiquitous-mode 1)
+
+(setq ido-enable-flex-matching t)
+
+;;(require 'icomplete)
+;;(icomplete-mode 1)
+
+;; ============================================================================
 ;; Helm
 ;; ============================================================================
-(require 'helm-config)
-(projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-(setq projectile-enable-caching t)
-
-(with-eval-after-load 'helm-projectile
-  (defvar helm-source-file-not-found
-    (helm-build-dummy-source
-        "Create file"
-      :action (lambda (cand) (find-file cand))))
-  (add-to-list 'helm-projectile-sources-list helm-source-file-not-found t))
-
-(setq projectile-mode-line
-         '(:eval (format " Projectile[%s]"
-                         (projectile-project-name))))
-
-(global-set-key (kbd "M-x") #'helm-M-x)
-(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-
-(defun smart-files ()
-  (interactive)
-  (if (projectile-project-p)
-    (helm-projectile-find-file-dwim)
-    (helm-find-files)))
-(global-set-key (kbd "C-x C-f") #'smart-files)
-
-;(setq helm-M-x-fuzzy-match t)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-
-(add-hook 'c-mode-hook 'helm-gtags-mode)
-(add-hook 'c++-mode-hook 'helm-gtags-mode)
-(add-hook 'asm-mode-hook 'helm-gtags-mode)
-(add-hook 'go-mode-hook (lambda () (helm-gtags-mode)))
-(add-hook 'python-mode-hook (lambda () (helm-gtags-mode)))
-(add-hook 'ruby-mode-hook (lambda () (helm-gtags-mode)))
-
-(with-eval-after-load 'helm-gtags
-  (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
-  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
-  (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
-  (define-key helm-gtags-mode-map (kbd "M-l") 'helm-gtags-select)
-  (define-key helm-gtags-mode-map (kbd "M-f") 'helm-gtags-find-files)
-  (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
-  (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
-  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
-  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
-  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack))
-
-;(require 'helm-descbinds)
-;(helm-descbinds-mode)
-
-(helm-mode 1)
+;;(require 'helm-config)
+;;(projectile-global-mode)
+;;(setq projectile-completion-system 'helm)
+;;(helm-projectile-on)
+;;(setq projectile-enable-caching t)
+;;
+;;(with-eval-after-load 'helm-projectile
+;;  (defvar helm-source-file-not-found
+;;    (helm-build-dummy-source
+;;        "Create file"
+;;      :action (lambda (cand) (find-file cand))))
+;;  (add-to-list 'helm-projectile-sources-list helm-source-file-not-found t))
+;;
+;;(setq projectile-mode-line
+;;         '(:eval (format " Projectile[%s]"
+;;                         (projectile-project-name))))
+;;
+;;(global-set-key (kbd "M-x") #'helm-M-x)
+;;(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+;;
+;;(defun smart-files ()
+;;  (interactive)
+;;  (if (projectile-project-p)
+;;    (helm-projectile-find-file-dwim)
+;;    (helm-find-files)))
+;;(global-set-key (kbd "C-x C-f") #'smart-files)
+;;
+;;;(setq helm-M-x-fuzzy-match t)
+;;(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+;;
+;;(add-hook 'c-mode-hook 'helm-gtags-mode)
+;;(add-hook 'c++-mode-hook 'helm-gtags-mode)
+;;(add-hook 'asm-mode-hook 'helm-gtags-mode)
+;;(add-hook 'go-mode-hook (lambda () (helm-gtags-mode)))
+;;(add-hook 'python-mode-hook (lambda () (helm-gtags-mode)))
+;;(add-hook 'ruby-mode-hook (lambda () (helm-gtags-mode)))
+;;
+;;(with-eval-after-load 'helm-gtags
+;;  (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
+;;  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+;;  (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
+;;  (define-key helm-gtags-mode-map (kbd "M-l") 'helm-gtags-select)
+;;  (define-key helm-gtags-mode-map (kbd "M-f") 'helm-gtags-find-files)
+;;  (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
+;;  (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
+;;  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+;;  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+;;  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack))
+;;
+;;;(require 'helm-descbinds)
+;;;(helm-descbinds-mode)
+;;
+;;(helm-mode 1)
 
 ;; ============================================================================
 ;; indent guides
@@ -157,9 +171,6 @@
 
 ;; Always only ask y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
-
-;; rsync: match subdirectories and python files, in order to get *.py and */*.py
-(setq compile-command "rsync -avz --include '*/' --include '*.py' --exclude '*' $PROJ_ROOT/sw/ifcs/shell/ edk4:hware/")
 
 ;:* don't invert colors when grabbing a password
 ;:  (because sometimes it screws up and leaves the frame
@@ -378,12 +389,16 @@
 ;; Keys
 ;; ============================================================================
 
-(global-set-key (kbd "C-<tab>") 'other-window)
 (global-set-key (kbd "S-<tab>") 'tab-to-tab-stop)
+;;(global-set-key (kbd "C-<tab>") 'other-window)
 ;;(global-set-key [(iso-left-tab)] 'tab-to-tab-stop)
 ;;(define-key global-map [(shift tab)] 'self-insert-command)
 
-(global-set-key [(control z)] 'undo)
+;; (global-set-key [(control z)] 'undo)
+(global-set-key [(meta =)] 'goto-line)
+
+(global-set-key (kbd "C-c f") 'fzf-git)
+
 (global-set-key [(meta s)] 'toggle-source-header)
 
 (global-set-key [(alt backspace)]

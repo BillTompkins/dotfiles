@@ -1,2 +1,8 @@
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export FZF_DEFAULT_OPTS="--tiebreak=begin,length"
+#export FZF_DEFAULT_COMMAND='ag -l -g ""'
+#export FZF_DEFAULT_COMMAND='bfs -L'
+export FZF_DEFAULT_COMMAND='bfs -L -nohidden'
+export FZF_DEFAULT_OPTS='-e --tiebreak=begin,length'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2>&/dev/null"
+export FZF_ALT_C_COMMAND="bfs -type d -nohidden -L"
+export FZF_ALT_C_HOME_COMMAND="bfs -type d -nohidden -L ~/"
+export EDITOR="emacs -nw"

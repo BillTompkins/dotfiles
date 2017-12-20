@@ -52,7 +52,7 @@ DISABLE_AUTO_UPDATE="true"
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -110,6 +110,7 @@ POWERLEVEL9K_DIR_SHOW_WRITABLE=true
 POWERLEVEL9K_DIR_NOT_WRITABLE_BACKGROUND='red'
 
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status root_indicator background_jobs history time)
+POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='236'
 
 POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
 
