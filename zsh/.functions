@@ -21,12 +21,15 @@ pathmunge() {
 
 # attach_or_connect HOST
 function attach_or_connect() {
-    if [[ $# -ne 1 ]]; then
-        echo 'Usage: attach [host]'
+    if [[ $# -lt 1 || $# -gt 2 || $1 == "-*" ]] ; then
+        echo 'Usage: attach <host> [socket-name]'
     else
-        ssh -x $1 -t tmux -f '~/.tmux-iTerm.conf' -CC attach
-        if [ "$?" -eq "1" ]; then
-            ssh -x $1 -t tmux -f '~/.tmux-iTerm.conf' -CC
+        sock=${2-default}
+        ssh -x $1 -t tmux -L ${sock} -f '~/.tmux-iTerm.conf' list-sessions
+        if [ "$?" -eq "0" ]; then
+            ssh -x $1 -t tmux -L ${sock} -f '~/.tmux-iTerm.conf' -CC attach
+        else
+            ssh -x $1 -t tmux -L ${sock} -f '~/.tmux-iTerm.conf' -CC
         fi
     fi
 }
