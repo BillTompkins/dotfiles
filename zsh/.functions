@@ -64,9 +64,8 @@ function omz_termsupport_preexec {
     fi
 
     # cmd name only, or if this is sudo or ssh, the next cmd
-    local CMD=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
-    local CMD_LINE=${1:gs/%/%%}
-
-    FULL_TITLE=${ZSH_TITLE_PREFIX}${CMD_LINE}
-    title "$CMD" "%100>...>$FULL_TITLE%<<"
+    local just_cmd ; short_cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
+    local cmd_line ; cmd_line=${1:gs/%/%%}
+    local full_title ; full_title=${ZSH_TITLE_PREFIX}${CMD_LINE}
+    title "$just_cmd" "%100>...>$full_title%<<"
 }

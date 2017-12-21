@@ -114,25 +114,28 @@ fi
 export DEFAULT_USERNAMES
 unset LC_USER
 
-local DEFAULT_USERNAME_LIST=("${(@s/:/)DEFAULT_USERNAMES}")
-if [[ ${DEFAULT_USERNAME_LIST[(r)${USER}]} == ${USER} ]] ; then
+local -a default_username_list ; default_username_list=("${(@s/:/)DEFAULT_USERNAMES}")
+
+if [[ ${default_username_list[(r)${USER}]} == ${USER} ]] ; then
     export USER_IS_DEFAULT=true
     export DEFAULT_USER=${USER}
 fi
 
+local title_user
 if [ $USER_IS_DEFAULT ] ; then
-    local TITLE_USER=""
+    title_user=""
 else
-    local TITLE_USER=${USER}@
+    title_user=${USER}@
 fi
 
+local title_host
 if [[ "${HOST}" == *.local ]] ; then
-    local TITLE_HOST=""
+    title_host=""
 else
-    local TITLE_HOST=${HOST}
+    title_host=${HOST}
 fi
 
-ZSH_TITLE_PREFIX="${TITLE_USER}${TITLE_HOST}"
+ZSH_TITLE_PREFIX="${title_user}${title_host}"
 if [[ $ZSH_TITLE_PREFIX != "" ]] ; then
     ZSH_TITLE_PREFIX="${ZSH_TITLE_PREFIX}: "
 fi
