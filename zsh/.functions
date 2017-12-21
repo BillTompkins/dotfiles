@@ -37,7 +37,7 @@ function attach_or_connect() {
 # Override these from oh-my-zsh to customize them a bit:
 
 # Runs before showing the prompt
-function my_omz_termsupport_precmd {
+function omz_termsupport_precmd {
     emulate -L zsh
 
     if [[ "$DISABLE_AUTO_TITLE" == true ]]; then
@@ -49,13 +49,8 @@ function my_omz_termsupport_precmd {
     # ZSH_THEME_TERM_TITLE_IDLE="%n@%m: %~"
     # title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
 
-    if [[ "$DEFAULT_USER" == "$USER" ]]; then
-       TITLE_USER=""
-       else
-           TITLE_USER=${USER}@
-    fi
-    TITLE_HOST=${HOST:#.local}  # empty if $HOST matches *.local, else $HOST
-    FULL_TITLE="${TITLE_USER}${TITLE_HOST}: %~"
+    FULL_TITLE="${ZSH_TITLE_PREFIX} %~"
+
     title $ZSH_THEME_TERM_TAB_TITLE_IDLE $FULL_TITLE
 }
 
@@ -72,19 +67,6 @@ function omz_termsupport_preexec {
     local CMD=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
     local CMD_LINE=${1:gs/%/%%}
 
-    if [[ "$DEFAULT_USER" == "$USER" ]]; then
-        TITLE_USER=""
-    else
-        TITLE_USER=${USER}@
-    fi
-    TITLE_HOST=${HOST}
-    if [[ ${TITLE_HOST} == *.local ]] ; then
-        TITLE_HOST=""
-    fi
-    FULL_TITLE="${TITLE_USER}${TITLE_HOST}"
-    if [[ $FULL_TITLE != "" ]] ; then
-        FULL_TITLE="${FULL_TITLE}: "
-    fi
-    FULL_TITLE=${FULL_TITLE}${CMD_LINE}
+    FULL_TITLE=${ZSH_TITLE_PREFIX}${CMD_LINE}
     title "$CMD" "%100>...>$FULL_TITLE%<<"
 }

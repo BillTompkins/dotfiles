@@ -63,10 +63,13 @@ HIST_STAMPS="yyyy-mm-dd"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  brew
-  osx
   zsh-syntax-highlighting
 )
+
+if [[ $(uname) == "Darwin" ]]; then
+  plugins+=brew
+  plugins+=osx
+fi
 
 source $ZSH/oh-my-zsh.sh
 
@@ -99,9 +102,42 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Use and set LC_USER so that SSH prompts will be right
-DEFAULT_USER=${LC_USER:-$USER}
+if [[ "${HOST}" == *.local && "${USER}"=bill* ]] ; then
+    DEFAULT_USERNAMES="bill:billt:btompkins"
+else
+    echo Inheriting via LC_USER: ${LC_USER}
+    # try to inherit the default username list via LC_USER (sent through SSH), separated by colons
+    DEFAULT_USERNAMES=${LC_USER}
+    if [[ ${#DEFAULT_USERNAMES} -eq 0 ]] ; then
+        DEFAULT_USERNAMES=${USER}
+    fi
+fi
+export DEFAULT_USERNAMES
 unset LC_USER
+
+local DEFAULT_USERNAME_LIST=("${(@s/:/)DEFAULT_USERNAMES}")
+if [[ ${DEFAULT_USERNAME_LIST[(r)${USER}]} == ${USER} ]] ; then
+    export USER_IS_DEFAULT=true
+    export DEFAULT_USER=${USER}
+fi
+
+if [ $USER_IS_DEFAULT ] ; then
+    local TITLE_USER=""
+else
+    local TITLE_USER=${USER}@
+fi
+
+if [[ "${HOST}" == *.local ]] ; then
+    local TITLE_HOST=""
+else
+    local TITLE_HOST=${HOST}
+fi
+
+ZSH_TITLE_PREFIX="${TITLE_USER}${TITLE_HOST}"
+if [[ $ZSH_TITLE_PREFIX != "" ]] ; then
+    ZSH_TITLE_PREFIX="${ZSH_TITLE_PREFIX}: "
+fi
+export ZSH_TITLE_PREFIX
 
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
@@ -109,7 +145,7 @@ POWERLEVEL9K_SHORTEN_STRATEGY="truncate_unique_from_left"
 POWERLEVEL9K_DIR_SHOW_WRITABLE=true
 POWERLEVEL9K_DIR_NOT_WRITABLE_BACKGROUND='red'
 
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status root_indicator background_jobs history time)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status root_indicator background_jobs time)
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='236'
 
 POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"

@@ -12,5 +12,5 @@ alias diff='colordiff -u'
 alias ag='ag --color-line-number="0;33" --color-match="0;35" --color-path="0;97"'
 alias fzf='fzf --preview "highlight -O ansi -l {}"'
 
-alias ssh='LC_USER=$USER ssh'
+alias ssh='LC_USER=$DEFAULT_USERNAMES ssh'
 alias attach='attach_or_connect'
