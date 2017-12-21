@@ -69,3 +69,8 @@ function omz_termsupport_preexec {
     local full_title ; full_title=${ZSH_TITLE_PREFIX}${CMD_LINE}
     title "$just_cmd" "%100>...>$full_title%<<"
 }
+
+# For going to boxes that have CSH as the unchangable default shell
+function sz {
+    ssh -t $1 "setenv SHELL zsh ; setenv DEFAULT_USERNAMES $DEFAULT_USERNAMES ; zsh -l"
+}

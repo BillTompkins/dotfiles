@@ -103,7 +103,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 if [[ "${HOST}" == *.local && "${USER}"=bill* ]] ; then
-    DEFAULT_USERNAMES="bill:billt:btompkins"
+    DEFAULT_USERNAMES="bill:billt:btompkins:billtompkins"
 else
     # try to inherit the default username list via LC_USER (sent through SSH), separated by colons
     DEFAULT_USERNAMES=${LC_USER}
