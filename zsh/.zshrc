@@ -105,7 +105,6 @@ source $ZSH/oh-my-zsh.sh
 if [[ "${HOST}" == *.local && "${USER}"=bill* ]] ; then
     DEFAULT_USERNAMES="bill:billt:btompkins"
 else
-    echo Inheriting via LC_USER: ${LC_USER}
     # try to inherit the default username list via LC_USER (sent through SSH), separated by colons
     DEFAULT_USERNAMES=${LC_USER}
     if [[ ${#DEFAULT_USERNAMES} -eq 0 ]] ; then
