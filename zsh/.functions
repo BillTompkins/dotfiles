@@ -64,10 +64,17 @@ function omz_termsupport_preexec {
     fi
 
     # cmd name only, or if this is sudo or ssh, the next cmd
-    local just_cmd ; short_cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
-    local cmd_line ; cmd_line=${1:gs/%/%%}
-    local full_title ; full_title=${ZSH_TITLE_PREFIX}${CMD_LINE}
+    local just_cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
+    local cmd_line=${1:gs/%/%%}
+    local full_title=${ZSH_TITLE_PREFIX}${cmd_line}
     title "$just_cmd" "%100>...>$full_title%<<"
+}
+
+function +vi-vcs-strip-master() {
+    if [[ "$hook_com[branch]" == "master" ]]; then
+#       hook_com[branch]='\010'
+       hook_com[branch]=' '
+    fi
 }
 
 # For going to boxes that have CSH as the unchangable default shell

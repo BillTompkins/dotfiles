@@ -62,7 +62,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
+  #git
   zsh-syntax-highlighting
 )
 
@@ -70,6 +70,10 @@ if [[ $(uname) == "Darwin" ]]; then
   plugins+=brew
   plugins+=osx
 fi
+
+POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind vcs-strip-master)
+#Default:
+#POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -121,18 +125,16 @@ if [[ ${default_username_list[(r)${USER}]} == ${USER} ]] ; then
     export DEFAULT_USER=${USER}
 fi
 
-local title_user
 if [ $USER_IS_DEFAULT ] ; then
-    title_user=""
+    local title_user=""
 else
-    title_user=${USER}@
+    local title_user=${USER}@
 fi
 
-local title_host
-if [[ "${HOST}" == *.local ]] ; then
-    title_host=""
+if [[ "${HOST}" == *.local || "${HOST}" == *.Home ]] ; then
+    local title_host=""
 else
-    title_host=${HOST}
+    local title_host=${HOST}
 fi
 
 ZSH_TITLE_PREFIX="${title_user}${title_host}"
@@ -146,12 +148,16 @@ POWERLEVEL9K_SHORTEN_DELIMITER=""
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_unique_from_left"
 POWERLEVEL9K_DIR_SHOW_WRITABLE=true
 POWERLEVEL9K_DIR_NOT_WRITABLE_BACKGROUND='red'
+POWERLEVEL9K_VCS_HIDE_TAGS=true
 
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status root_indicator background_jobs time)
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='236'
 
 POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
-
+typeset -A POWERLEVEL9K_DIR_NICKNAMES
+POWERLEVEL9K_DIR_NICKNAMES[$HOME]=\~
+POWERLEVEL9K_DIR_NICKNAMES[/Users/bill/cra/test1]="W:"
+POWERLEVEL9K_DIR_NICKNAMES[cra/test1]="F:"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.functions ] && source ~/.functions
